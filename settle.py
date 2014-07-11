@@ -46,28 +46,36 @@ for g in grid:
     for i in range(len(g)):
         if g[i] < 0.3: 
             g[i] = tile.Grassland()
+            g[i].random_resource()
         elif g[i] < 0.4: 
             g[i] = tile.Grassland()
             g[i].set_forest()
+            g[i].random_resource()
         elif g[i] < 0.45: 
             g[i] = tile.Grassland()
             g[i].set_hill()
+            g[i].random_resource()
         elif g[i] < 0.5: 
             g[i] = tile.Grassland()
             g[i].set_hill()
             g[i].set_forest()
+            g[i].random_resource()
         elif g[i] < 0.7: 
             g[i] = tile.Plain()
+            g[i].random_resource()
         elif g[i] < 0.8: 
             g[i] = tile.Plain()
             g[i].set_forest()
+            g[i].random_resource()
         elif g[i] < 0.85: 
             g[i] = tile.Plain()
             g[i].set_hill()
+            g[i].random_resource()
         elif g[i] < 0.9: 
             g[i] = tile.Plain()
             g[i].set_hill()
             g[i].set_forest()
+            g[i].random_resource()
         else: 
             g[i] = tile.Mountain()
 
@@ -77,6 +85,7 @@ sy = sx
 if isinstance(grid[sy][sx], tile.Mountain):
     grid[sy][sx] = tile.Grassland()
 grid[sy][sx].occupant = SETTLER
+grid[sy][sx].resource = None
 set_visibility(sx, sy, 2, grid[sy][sx].hill)
 
 wx,wy = random.choice(neighbours(sx, sy))
@@ -84,6 +93,16 @@ if isinstance(grid[wy][wx], tile.Mountain):
     grid[wy][wx] = tile.Grassland()
 grid[wy][wx].occupant = WARRIOR
 set_visibility(wx, wy, 2, grid[wy][wx].hill)
+
+lux = 0
+while lux < 2:
+    xl, yl = random.randint(-2,2), random.randint(-2,2)
+    if xl == yl == 0:
+        continue
+    t = grid[sy + yl][sx + xl]
+    if not isinstance(t, tile.Mountain):
+        lux += 1
+        t.random_luxury()
 
 print_map(grid)
 
